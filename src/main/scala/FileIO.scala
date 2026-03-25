@@ -1,7 +1,10 @@
 import scala.io.Source
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
 
 object FileIO {
 
+  implicit val formats = DefaultFormats
   def readFile(path: String): String = {
     // Crea la conexion con el archivo
     val source = Source.fromFile(path)
@@ -13,7 +16,6 @@ object FileIO {
 
   def readSubscriptions(): List[Subscription] = {
     val json = readFile("subscriptions.json")
-
     // parser
     val entries = json
       .replace("[", "")
@@ -37,9 +39,23 @@ object FileIO {
     }
   }
 
-  def downloadFeed(url: String): String = {
+  def downloadFeed(url: String): List[Post] = {
     val source = Source.fromURL(url)
-    try source.mkString
-    finally source.close()
+    val subreddit = url.split("/")(4)
+    val content = source.mkString
+    source.close()
+
+    val data = parse(content)
+    val posts = (data \ "data" \ "children").children
+
+    for (item <- posts) yield {
+
+      val title = (item \ "data" \ "title").extract[String]
+      val selftext = (item \ "data" \ "selftext" ).extractOpt[String].getOrElse("")
+      val createdUtc = (item \ "data" \ "created_utc").extract[Double].toLong
+      val date = TextProcessing.formatDateFromUTC(createdUtc)    
+
+      Post(subreddit, title, selftext, date)
+    }  
   }
 }
