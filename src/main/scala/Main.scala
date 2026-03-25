@@ -4,7 +4,7 @@ object Main {
 
     val subscriptions: List[Subscription] = FileIO.readSubscriptions()
 
-    val allPosts: List[(String, String)] = subscriptions.map { sub =>
+    val allPosts: List[(String, List[Post])] = subscriptions.map { sub =>
       println(s"Fetching posts from: $sub.url")
       val posts = FileIO.downloadFeed(sub.url)
       (sub.url, posts)
