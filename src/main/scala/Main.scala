@@ -10,7 +10,16 @@ object Main {
       (sub.url, posts)
     }
 
-    val output = allPosts
+    val allFilteredPosts = allPosts.map { case (url, posts) =>
+        val filteredPosts = posts.filter { case Post(_, title, selftext, _) =>
+          title.trim.nonEmpty &&
+          selftext.trim.nonEmpty &&                     
+          (title + selftext).trim.nonEmpty           
+    }
+    (url, filteredPosts)
+    }.filter { case (_, posts) => posts.nonEmpty }
+
+    val output = allFilteredPosts
       .map { case (url, posts) => Formatters.formatSubscription(url, posts) }
       .mkString("\n")
 
