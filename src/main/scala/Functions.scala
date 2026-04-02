@@ -92,7 +92,7 @@ object Myfunctions{
 
         // Cinco primeros posts (titulo, fecha, URL)
         val stringTop5 = posts.take(5).map { p =>
-            s"   - Título: ${p.title} | Fecha: ${p.date} | URL: ${p.url}" 
+            s"------------------- \n\n Título: ${p.title} \n\n Fecha: ${p.date} \n\n URL: ${p.url} \n" 
         }.mkString("\n")
 
         // Reporte final
