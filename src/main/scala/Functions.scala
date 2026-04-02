@@ -17,7 +17,7 @@ object TextProcessing{
 object Myfunctions{
 
     val stopwords: Set[String] = Set(
-        "the", "about", "above", "after", "again", "against", "all", "am", "an",
+        "a", "the", "about", "above", "after", "again", "against", "all", "am", "an",
         "and", "any", "are", "aren't", "as", "at", "be", "because", "been",
         "before", "being", "below", "between", "both", "but", "by", "can't",
         "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't",
@@ -38,7 +38,6 @@ object Myfunctions{
         "who's", "whom", "why", "why's", "with", "won't", "would",
         "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours",
         "yourself", "yourselves"
-
     )
 
     
