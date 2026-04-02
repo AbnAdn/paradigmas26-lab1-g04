@@ -4,7 +4,7 @@ import org.json4s.jackson.JsonMethods._
 
 object FileIO {
 
-  implicit val formats = DefaultFormats
+  implicit val formats: Formats = DefaultFormats
   def readFile(path: String): String = {
     // Crea la conexion con el archivo
     val source = Source.fromFile(path)
@@ -53,9 +53,11 @@ object FileIO {
       val title = (item \ "data" \ "title").extract[String]
       val selftext = (item \ "data" \ "selftext" ).extractOpt[String].getOrElse("")
       val createdUtc = (item \ "data" \ "created_utc").extract[Double].toLong
-      val date = TextProcessing.formatDateFromUTC(createdUtc)    
+      val date = TextProcessing.formatDateFromUTC(createdUtc)
+      val score = (item \ "data" \ "score").extractOpt[Int].getOrElse(0)
+      val url = (item \ "data" \ "url" ).extractOpt[String].getOrElse("")
 
-      Post(subreddit, title, selftext, date)
+      Post(subreddit, title, selftext, date, score, url)
     }  
   }
 }
